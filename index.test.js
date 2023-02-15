@@ -10,21 +10,31 @@ describe("Band and Musician Models", () => {
     // by setting 'force:true' the tables are recreated each time the
     // test suite is run
     await sequelize.sync({ force: true });
+    newBand = await Band.create({
+      name: "Spice Girls",
+      genre: "Pop",
+      showCount: 100,
+    });
   });
 
   test("can create a Band", async () => {
-    // TODO - test creating a band
-    const newBand = await Band.create({
-      name: "Spice Girls",
-      genre: "Pop",
-    });
     expect(newBand).toBeInstanceOf(Band);
     expect(newBand.name).toBe("Spice Girls");
     expect(newBand.genre).toBe("Pop");
+    expect(newBand.showCount).toBe(100);
   });
 
+  test("can update a Band", async () => {
+    await newBand.update({ showCount: 101 });
+    expect(newBand.showCount).toBe(101);
+  });
+
+//   test("can delete a Band", async () => {
+//     await newBand.destroy();
+//     expect(newBand.name).toBeUndefined();
+//   });
+
   test("can create a Musician", async () => {
-    // TODO - test creating a musician
     const newMusician = await Musician.create({
       name: "Mel C",
       instrument: "Singer",
