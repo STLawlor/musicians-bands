@@ -1,7 +1,7 @@
-const {Band} = require('./Band')
-const {Musician} = require('./Musician')
+const { Band } = require("./Band");
+const { Musician } = require("./Musician");
 
 module.exports = {
-    Band,
-    Musician
+  Band,
+  Musician,
 };
