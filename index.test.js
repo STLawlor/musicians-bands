@@ -29,10 +29,11 @@ describe("Band and Musician Models", () => {
     expect(newBand.showCount).toBe(101);
   });
 
-//   test("can delete a Band", async () => {
-//     await newBand.destroy();
-//     expect(newBand.name).toBeUndefined();
-//   });
+  test("can delete a Band", async () => {
+    await newBand.destroy();
+    const allBands = await Band.findAll();
+    expect(allBands).toEqual([]);
+  });
 
   test("can create a Musician", async () => {
     const newMusician = await Musician.create({
