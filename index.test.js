@@ -1,5 +1,5 @@
 const { sequelize } = require("./db");
-const { Band, Musician } = require("./index");
+const { Band, Musician, Song } = require("./index");
 
 describe("Band and Musician Models", () => {
   /**
@@ -31,6 +31,11 @@ describe("Band and Musician Models", () => {
     newMusician2 = await Musician.create({
       name: "Baby Spice",
       instrument: "Singer",
+    });
+
+    newSong = await Song.create({
+      name: "Wannabe",
+      year: 1996,
     });
   });
 
@@ -67,5 +72,11 @@ describe("Band and Musician Models", () => {
     expect(bandMusicians[0]).toBeInstanceOf(Musician);
     expect(bandMusicians[0].name).toEqual("Mel C");
     expect(bandMusicians[1].name).toEqual("Baby Spice");
+  });
+
+  test("can create a song", async () => {
+    expect(newSong).toBeInstanceOf(Song);
+    expect(newSong.name).toEqual("Wannabe");
+    expect(newSong.year).toEqual(1996);
   });
 });
