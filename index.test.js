@@ -74,9 +74,9 @@ describe("Band and Musician Models", () => {
   });
 
   test("Muscians associate with correct Band", async () => {
-    await newBand2.addMusician(newMusician);
-    await newBand2.addMusician(newMusician2);
-    const bandMusicians = await newBand2.getMusicians();
+    await newBand2.addMember(newMusician);
+    await newBand2.addMember(newMusician2);
+    const bandMusicians = await newBand2.getMembers();
 
     expect(bandMusicians.length).toEqual(2);
     expect(bandMusicians[0]).toBeInstanceOf(Musician);
@@ -91,8 +91,7 @@ describe("Band and Musician Models", () => {
   });
 
   test("can add Songs to Band", async () => {
-    await newBand2.addSong(1);
-    await newBand2.addSong(2);
+    await newBand2.addSong([1, 2]);
     const bandSongs = await newBand2.getSongs();
 
     expect(bandSongs.length).toEqual(2);
@@ -103,5 +102,14 @@ describe("Band and Musician Models", () => {
     const songBands = await newSong2.getBands();
 
     expect(songBands.length).toEqual(2);
+  });
+
+  test("eager load data", async () => {
+    const bandsWithMembers = await Band.findAll({
+      include: [{ model: Musician, as: "members" }],
+    });
+
+    expect(bandsWithMembers.length).toEqual(2);
+    expect(bandsWithMembers[0].members.length).toEqual(2);
   });
 });
