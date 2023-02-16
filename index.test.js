@@ -10,10 +10,21 @@ describe("Band and Musician Models", () => {
     // by setting 'force:true' the tables are recreated each time the
     // test suite is run
     await sequelize.sync({ force: true });
+
     newBand = await Band.create({
       name: "Spice Girls",
       genre: "Pop",
       showCount: 100,
+    });
+
+    newMusician = await Musician.create({
+      name: "Mel C",
+      instrument: "Singer",
+    });
+
+    newMusician2 = await Musician.create({
+      name: "Baby Spice",
+      instrument: "Singer",
     });
   });
 
@@ -36,12 +47,25 @@ describe("Band and Musician Models", () => {
   });
 
   test("can create a Musician", async () => {
-    const newMusician = await Musician.create({
-      name: "Mel C",
-      instrument: "Singer",
-    });
     expect(newMusician).toBeInstanceOf(Musician);
     expect(newMusician.name).toBe("Mel C");
     expect(newMusician.instrument).toBe("Singer");
+  });
+
+  test("Muscians associate with correct Band", async () => {
+    let newBand2 = await Band.create({
+      name: "Spice Girls",
+      genre: "Pop",
+      showCount: 100,
+    });
+
+    await newBand2.addMusician(newMusician);
+    await newBand2.addMusician(newMusician2);
+    const bandMusicians = await newBand2.getMusicians();
+
+    expect(bandMusicians.length).toEqual(2);
+    expect(bandMusicians[0]).toBeInstanceOf(Musician);
+    expect(bandMusicians[0].name).toEqual("Mel C");
+    expect(bandMusicians[1].name).toEqual("Baby Spice");
   });
 });
