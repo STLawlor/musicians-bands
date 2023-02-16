@@ -104,12 +104,14 @@ describe("Band and Musician Models", () => {
     expect(songBands.length).toEqual(2);
   });
 
-  test("eager load data", async () => {
-    const bandsWithMembers = await Band.findAll({
-      include: [{ model: Musician, as: "members" }],
+  test("can eager load data", async () => {
+    const bandsWithMembersAndSongs = await Band.findAll({
+      include: [{ model: Musician, as: "members" }, { model: Song }],
     });
 
-    expect(bandsWithMembers.length).toEqual(2);
-    expect(bandsWithMembers[0].members.length).toEqual(2);
+    expect(bandsWithMembersAndSongs.length).toEqual(2);
+    expect(bandsWithMembersAndSongs[0].members.length).toEqual(2);
+    expect(bandsWithMembersAndSongs[0].Songs.length).toEqual(2);
+    expect(bandsWithMembersAndSongs[1].Songs.length).toEqual(1);
   });
 });
