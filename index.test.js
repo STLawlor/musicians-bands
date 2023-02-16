@@ -37,6 +37,11 @@ describe("Band and Musician Models", () => {
       name: "Wannabe",
       year: 1996,
     });
+
+    newSong2 = await Song.create({
+      name: "Stop",
+      year: 1997,
+    });
   });
 
   test("can create a Band", async () => {
@@ -78,5 +83,13 @@ describe("Band and Musician Models", () => {
     expect(newSong).toBeInstanceOf(Song);
     expect(newSong.name).toEqual("Wannabe");
     expect(newSong.year).toEqual(1996);
+  });
+
+  test("can add Songs to Band", async () => {
+    await newBand2.addSong(1);
+    await newBand2.addSong(2);
+    const bandSongs = await newBand2.getSongs();
+
+    expect(bandSongs.length).toEqual(2);
   });
 });
