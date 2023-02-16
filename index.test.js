@@ -23,6 +23,11 @@ describe("Band and Musician Models", () => {
       showCount: 100,
     });
 
+    newBand3 = Band.create({
+      name: "collabBand",
+      showCount: 1,
+    });
+
     newMusician = await Musician.create({
       name: "Mel C",
       instrument: "Singer",
@@ -59,7 +64,7 @@ describe("Band and Musician Models", () => {
   test("can delete a Band", async () => {
     await newBand.destroy();
     const allBands = await Band.findAll();
-    expect(allBands.length).toEqual(1);
+    expect(allBands.length).toEqual(2);
   });
 
   test("can create a Musician", async () => {
@@ -91,5 +96,12 @@ describe("Band and Musician Models", () => {
     const bandSongs = await newBand2.getSongs();
 
     expect(bandSongs.length).toEqual(2);
+  });
+
+  test("can add Bands to Song", async () => {
+    await newSong2.addBand(3);
+    const songBands = await newSong2.getBands();
+
+    expect(songBands.length).toEqual(2);
   });
 });
